@@ -1,7 +1,21 @@
-import React from "react";
+import Head from "next/head";
+import Sidebar from "../components/Sidebar";
+import Feed from "../components/Feed";
 
-const index = () => {
-  return <div>index</div>;
+const Home = () => {
+  return (
+    <div>
+      <Head>
+        <title>Twitter Second</title>
+        <meta name="description" content="genrerated by create next app" />
+        <link rel="icon" href="/favicon.ico" />
+      </Head>
+      <main className="flex min-h-screen max-w-7xl mx-auto ">
+        <Sidebar />
+        <Feed />
+      </main>
+    </div>
+  );
 };
 
-export default index;
+export default Home;
