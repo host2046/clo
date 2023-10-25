@@ -14,7 +14,7 @@ const Input = () => {
           <textarea
             className="w-full border-none focus:ring-0 text-lg placeholder-gray-700 tracking-wider min-h-[50px] text-gray-700"
             rows="2"
-            placeholder="what' s happening?"
+            placeholder="What' s happening?"
           ></textarea>
         </div>
 
