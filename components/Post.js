@@ -32,7 +32,7 @@ const Post = () => {
           <DotsHorizontalIcon className="h-10 w-10 p-2 hoverEffect hover:bg-sky-100 hover:text-sky-400" />
         </div>
 
-        <p className="text-gray-800 text-[15px] sm:text-[16px] mb-2">
+        <p className="text-gray-800  text-[15px] sm:text-[16px] mb-2">
           nice view!
         </p>
         <Image
