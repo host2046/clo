@@ -50,7 +50,7 @@ const Sidebar = () => {
     },
   ];
   return (
-    <div className="hidden sm:flex flex-col p-2 xl:items-start fixed h-full">
+    <div className="hidden sm:flex flex-col p-2 xl:items-start fixed h-full pl-24">
       <div className="hoverEffect p-0 hover:bg-blue-100 xl:p-1.5 ">
         <Image
           width="50"
