@@ -11,6 +11,7 @@ const Home = ({ articleResults, randomUserResult }) => {
         <meta name="description" content="genrerated by create next app" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+
       <main className="flex min-h-screen  mx-auto ">
         <Sidebar />
         <Feed />
