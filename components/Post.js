@@ -6,26 +6,27 @@ import {
   ShareIcon,
   TrashIcon,
 } from "@heroicons/react/outline";
-import Image from "next/image";
-import userImage from "../public/image/myImage.jpg";
+import Moment from "react-moment";
 
-const Post = () => {
+const Post = ({ post }) => {
   return (
     <div className="p-3 flex cursor-pointer border-b border-gray-200">
-      <Image
+      <img
         className="w-11 h-11 mr-4 rounded-full"
-        src={userImage}
+        src={post.data().userImage}
         alt="user-image"
       />
       <div className="flex-1">
         <div className="flex items-center justify-between">
           <div className="flex items-center space-x-1 whitespace-nowrap">
             <h4 className="font-bold  text-[15px] sm:text-[16px] hover:underline">
-              Ali Mizbani
+              {post.data().name}
             </h4>
-            <span className="text-sm sm:text-[15px]">@codewithme -</span>
+            <span className="text-sm sm:text-[15px]">
+              @{post.data().username} -{" "}
+            </span>
             <span className="text-sm sm:text-[15px] hover:underline">
-              2 Hours Ago
+              <Moment fromNow>{post?.timestamp?.toDate()}</Moment>
             </span>
           </div>
 
@@ -33,15 +34,9 @@ const Post = () => {
         </div>
 
         <p className="text-gray-800  text-[15px] sm:text-[16px] mb-2">
-          nice view!
+          {post.data().text}
         </p>
-        <Image
-          width="600"
-          height="600"
-          className=" rounded-2xl mr-2"
-          src="https://images.unsplash.com/photo-1426604966848-d7adac402bff?auto=format&fit=crop&q=60&w=500&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTF8fG5hdHVyZXxlbnwwfHwwfHx8MA%3D%3D"
-          alt=""
-        />
+        <img className=" rounded-2xl mr-2" src={post.data().image} alt="" />
         <div className="flex justify-between text-gray-500 p-2">
           <div className="flex items-center  select-none">
             <ChatIcon className="h-9 w-9 hoverEffect p-2 hover:text-sky-500 hover:bg-sky-100" />

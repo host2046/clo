@@ -80,7 +80,7 @@ const Input = () => {
             {selectedFile && (
               <div className="relative">
                 <XIcon
-                  className="h-7 text-white cursor-pointer absolute shadow-md shadow-white rounded-full"
+                  className="h-7 text-white cursor-pointer absolute shadow-md border border-white rounded-full m-1"
                   onClick={() => setselectedFile(null)}
                 />
                 <img
