@@ -6,9 +6,50 @@ import {
   ShareIcon,
   TrashIcon,
 } from "@heroicons/react/outline";
+import {
+  collection,
+  deleteDoc,
+  doc,
+  onSnapshot,
+  setDoc,
+} from "firebase/firestore";
+import { HeartIcon as HeadtIconFilled } from "@heroicons/react/solid";
 import Moment from "react-moment";
+import { db } from "../firebase";
+import { signIn, useSession } from "next-auth/react";
+import { useEffect, useState } from "react";
 
 const Post = ({ post }) => {
+  const { data: session } = useSession();
+  const [likes, setLikes] = useState([]);
+  const [hasLiked, setHasLiked] = useState(false);
+
+  useEffect(
+    () =>
+      onSnapshot(collection(db, "posts", post.id, "likes"), (snapshot) =>
+        setLikes(snapshot.docs)
+      ),
+    [db]
+  );
+  useEffect(() => {
+    setHasLiked(
+      likes.findIndex((like) => like.id === session?.user.uid) !== -1
+    );
+  }, [likes]);
+
+  const likePost = async () => {
+    if (session) {
+      if (hasLiked) {
+        await deleteDoc(doc(db, "posts", post.id, "likes", session?.user.uid));
+      } else {
+        await setDoc(doc(db, "posts", post.id, "likes", session?.user.uid), {
+          username: session.user.username,
+        });
+      }
+    } else {
+      signIn();
+    }
+  };
   return (
     <div className="p-3 flex cursor-pointer border-b border-gray-200">
       <img
@@ -26,7 +67,7 @@ const Post = ({ post }) => {
               @{post.data().username} -{" "}
             </span>
             <span className="text-sm sm:text-[15px] hover:underline">
-              <Moment fromNow>{post?.timestamp?.toDate()}</Moment>
+              <Moment fromNow>{post?.data().timestamp?.toDate()}</Moment>
             </span>
           </div>
 
@@ -45,9 +86,23 @@ const Post = ({ post }) => {
           <TrashIcon className="h-9 w-9 hoverEffect p-2 hover:text-red-600 hover:bg-red-100" />
 
           <div className="flex items-center">
-            <HeartIcon className="h-9 w-9 hoverEffect p-2 hover:text-red-600 hover:bg-red-100" />
+            {hasLiked ? (
+              <HeadtIconFilled
+                onClick={likePost}
+                className="h-9 w-9 hoverEffect p-2 text-red-600 hover:bg-red-100"
+              />
+            ) : (
+              <HeartIcon
+                onClick={likePost}
+                className="h-9 w-9 hoverEffect p-2 hover:text-red-600 hover:bg-red-100"
+              />
+            )}
 
-            <span className="text-sm select-none"> </span>
+            {likes.length > 0 && (
+              <span className={`${hasLiked && "text-red-600"} text-sm `}>
+                {likes.length}
+              </span>
+            )}
           </div>
 
           <ShareIcon className="h-9 w-9 hoverEffect p-2 hover:text-sky-500 hover:bg-sky-100" />
