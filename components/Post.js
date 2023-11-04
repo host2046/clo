@@ -15,9 +15,10 @@ import {
 } from "firebase/firestore";
 import { HeartIcon as HeadtIconFilled } from "@heroicons/react/solid";
 import Moment from "react-moment";
-import { db } from "../firebase";
+import { db, storage } from "../firebase";
 import { signIn, useSession } from "next-auth/react";
 import { useEffect, useState } from "react";
+import { deleteObject, ref } from "firebase/storage";
 
 const Post = ({ post }) => {
   const { data: session } = useSession();
@@ -50,6 +51,15 @@ const Post = ({ post }) => {
       signIn();
     }
   };
+
+  const deletePost = async () => {
+    if (window.confirm("Are you sure to delete the post?")) {
+      await deleteDoc(doc(db, "posts", post.id));
+      if (post.data().image) {
+        deleteObject(ref(storage, `posts/${post.id}/image`));
+      }
+    }
+  };
   return (
     <div className="p-3 flex cursor-pointer border-b border-gray-200">
       <img
@@ -79,11 +89,13 @@ const Post = ({ post }) => {
         </p>
         <img className=" rounded-2xl mr-2" src={post.data().image} alt="" />
         <div className="flex justify-between text-gray-500 p-2">
-          <div className="flex items-center  select-none">
-            <ChatIcon className="h-9 w-9 hoverEffect p-2 hover:text-sky-500 hover:bg-sky-100" />
-          </div>
-
-          <TrashIcon className="h-9 w-9 hoverEffect p-2 hover:text-red-600 hover:bg-red-100" />
+          <ChatIcon className="h-9 w-9 hoverEffect p-2 hover:text-sky-500 hover:bg-sky-100" />
+          {session?.user.uid === post.data().id && (
+            <TrashIcon
+              onClick={deletePost}
+              className="h-9 w-9 hoverEffect p-2 hover:text-red-600 hover:bg-red-100"
+            />
+          )}
 
           <div className="flex items-center">
             {hasLiked ? (
